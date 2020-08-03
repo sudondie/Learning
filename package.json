@@ -1,0 +1,22 @@
+{
+  "name": "sas",
+  "version": "1.0.0",
+  "description": "my learning code",
+  "main": "eloquent.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sudondie/JS---------.git"
+  },
+  "author": "me",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sudondie/JS---------/issues"
+  },
+  "homepage": "https://github.com/sudondie/JS---------#readme",
+  "devDependencies": {
+    "eslint": "^7.6.0"
+  }
+}
