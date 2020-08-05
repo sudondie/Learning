@@ -59,4 +59,3 @@ Array.prototype.addItem = function (pos, item) {
 console.log(guests.addItem(2, "Brat"));
 console.log(guests.addItem(3, "suka"));
 console.log(guests);
-console.log('new');
