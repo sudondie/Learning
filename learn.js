@@ -1,4 +1,4 @@
-console.log("suka");
+/* console.log("suka");
 class Person {
   constructor(name, email, birthyear) {
     this.name = name;
@@ -118,36 +118,278 @@ while (true) {
   console.log(result.value);
 }
 let arrayLike = {
-  0: 'world',
-  1: 'matters',
+  0: "world",
+  1: "matters",
   length: 2,
-}
+};
 let arrayTrue = Array.from(arrayLike);
-arrayTrue.push(' ,bitch');
+arrayTrue.push(" ,bitch");
 console.log(arrayTrue);
 
 //задача 1 из Map и Set
-let superArr = ['suka','suka','bitch','please','bitch','kill'];
+let superArr = ["suka", "suka", "bitch", "please", "bitch", "kill"];
 function unique(arr) {
   return Array.from(new Set(arr));
 }
-alert( unique(superArr) );
+//alert( unique(superArr) );
 
 function aclean(arr) {
   let map = new Map();
-  for ( let word of arr) {
-    let sortedWord = word.toLowerCase().split('').sort().join('');
-    map.set(sortedWord,word);
+  for (let word of arr) {
+    let sortedWord = word.toLowerCase().split("").sort().join("");
+    map.set(sortedWord, word);
   }
   return Array.from(map.values());
 }
 
 let anoArr = ["nap", "teachers", "cheaters", "PAN", "ear", "era", "hectares"];
 
-alert( aclean(anoArr) );
+//alert( aclean(anoArr) );
 
 let weakMap = new WeakMap();
 let obj = {};
-weakMap.set(obj,'value');
+weakMap.set(obj, "value");
 obj = null;
 console.log(weakMap.get(obj));
+
+/* function sumAll(...args) {
+  //остаточные параметры,всегда указываются в конце
+  let sum = 0;
+  for (let arg of args) sum += arg;
+  return sum;
+}
+console.log(sumAll(2, 3, 4)); */
+//оператор расширения по сути то же что и остаточные операторы но чекай как че
+/* let numbersAgain = [1, 2, 6, 7, 25];
+console.log(Math.max(...numbersAgain)); */
+//этот оператор можно использовать для слияния массивов просто типо let combined = [1,...arr1,...arr2];
+//он так же переводид строку в массив символов */
+
+/* function inBetween(a, b) {
+  return function (x) {
+    return (x >= a) & (x <= b);
+  };
+}
+let arrBetween = [1, 2, 3, 4, 5, 6, 7];
+alert(arrBetween.filter(inBetween(3, 6))); // 3,4,5,6
+
+function inArray(arr) {
+  return function (x) {
+    return arr.includes(x);
+  };
+}
+
+let arrIn = [1, 2, 3, 4, 5, 6, 7];
+alert(arrIn.filter(inArray([1, 2, 10]))); // 1,2 */
+
+/* function sayHello() {
+  alert(this.name);
+}
+let objHello = { name: "Ilia" };
+
+sayHello.call(objHello); */
+
+function ask(question, ...handlers) {
+  let isYes = confirm(question);
+  for (let handler of handlers) {
+    if (handler.length == 0) {
+      if (isYes) handler();
+    } else {
+      handler(isYes);
+    }
+  }
+}
+
+//ask('Вы гей?', () => alert("вы ответили что вы гей!"), result => alert(result));
+
+function makeCounter() {
+  function counter() {
+    return counter.count++; //вот это вот замыкание функции на внешних переменных
+  }
+  counter.set = (value) => (counter.count = value);
+  counter.decreese = () => --counter.count;
+  return counter;
+}
+let counter = makeCounter();
+
+function sum(a) {
+  let current = a;
+  function f(b) {
+    current += b;
+    return f;
+  }
+  f.toString = function () {
+    return current;
+  };
+  return f;
+}
+
+//Named Function Expression
+let sayHi2 = function func(who) {
+  if (who) {
+    alert(`Hello ${who}`);
+  } else {
+    func("guest"); //здесь если не задан аргумент who можно сослаться на имя функции и вызвать ее
+  } //func недоступен за пределами sayHi2, в этом и прикол
+}; //если бы мы написали вместо func sayHi2 то могли бы возникнуть проблемы
+
+/* let worker = {
+  slow(min, max) {
+    alert(`Called with ${min},${max}`);
+    return min + max;
+  },
+};
+ */
+/* function cacheDecorator(func, hash) {
+  //функция декоратор которая добавляет кеширование
+  let cache = new Map();
+  return function (x) {
+    let key = hash(arguments);
+    if (cache.has(key)) {
+      return cache.get(key);
+    }
+    let result = func.apply(this, arguments);
+    cache.set(key, result);
+    return result;
+  };
+}
+/* function hash() { */
+  //хэширующая функция которая знает, как сделать одно значение из многих.
+ // return [].join.call(arguments); //если бы написали просто arguments.join() то получили бы ошибку
+ //ибо arguments это псевдомассив а join такое не хавает
+//то что мы написали называется "заимствованием метода" */
+
+/* worker.slow = cacheDecorator(worker.slow, hash); */
+/* alert(worker.slow(3, 5)); // работает
+alert("Again " + worker.slow(3, 5)); // аналогично (из кеша) */
+
+/* function work(a, b) {
+  alert(a + b); // произвольная функция или метод
+}
+
+function spy(func) {
+  function wrapper(...args) {
+    //можно запушить потому что ...args это реальный массив
+    wrapper.calls.push(args);
+    return func.apply(this, arguments);
+  }
+  wrapper.calls = [];
+  return wrapper;
+} */
+
+/* work = spy(work);
+/* for (let args of work.calls) {
+  alert("call:" + args.join()); // "call:1,2", "call:4,5"
+} */
+
+/* function delay(f, ms) {
+  return function () {
+    setTimeout(() => f.apply(this, arguments), ms);
+  };
+}
+let f1000 = delay(console.log, 1000);
+
+f1000("test"); // показывает "test" после 1000 мс
+
+function debounce(f, ms) {
+  let isCoolDown = false;
+  return function () {
+    if (isCoolDown) return;
+    f.apply(this, arguments);
+    isCoolDown = true;
+    setTimeout(() => (isCoolDown = false), ms);
+  };
+}
+
+let f = debounce(alert, 1000);
+
+f(1); // выполняется немедленно
+f(2); // проигнорирован
+ */
+function throttle(func, ms) {
+  let isThrottled = false,
+    savedArgs,
+    savedThis;
+  function wrapper() {
+    if (isThrottled) { // (2)
+      savedArgs = arguments;
+      savedThis = this;
+      return;
+    }
+    func.apply(this, arguments); // (1)
+    isThrottled = true;
+    setTimeout(function() {
+      isThrottled = false; // (3)
+      if (savedArgs) {
+        wrapper.apply(savedThis, savedArgs);
+        savedArgs = savedThis = null;
+      }
+    }, ms);
+  }
+  return wrapper;
+}
+function f(a) {
+  console.log(a)
+}
+let f10000 = throttle(f, 1000);
+
+/* f10000(1); // показывает 1
+f10000(2); // (ограничение, 1000 мс ещё нет)
+f10000(3); // (ограничение, 1000 мс ещё нет) */
+
+//декоратор который добавляет время вызова в консоль
+console.group('Моя функция:');
+function nameAlert(arg) {
+  alert('Привет ' + arg);
+}
+
+function nameAlertDecorator(f) {
+  return function() {
+    let date = new Date();
+    let minutes = date.getMinutes();
+    console.log('Время вызова: ' + date.getHours() +':'+ minutes.toString().padStart(2,'0'));
+    f.bind(this,arguments[0],arguments[1])();
+  }
+}
+let nameAlertDecorator1 = nameAlertDecorator(nameAlert);
+/* nameAlertDecorator1('Саша');
+nameAlertDecorator1('Илья'); */
+console.groupEnd();
+
+//задачи из раздела о декораторах 
+// №1 задача о "шпионе"
+/* function work(a, b) {
+  alert( a + b ); // произвольная функция или метод
+}
+
+function spy(f) {
+  function wrapper(...args) {
+    wrapper.calls.push(args);
+    return f.apply(this,arguments);
+  }
+  wrapper.calls = [];
+  return wrapper;
+}
+// eslint-disable-next-line no-func-assign
+work = spy(work);
+work(1, 2); // 3
+work(4, 5); // 9
+
+for (let args of work.calls) {
+  alert( 'call:' + args.join() ); // "call:1,2", "call:4,5"
+} */
+
+//№2 "Задерживающий декоратор"
+/* function f(x) {
+  alert(x);
+}
+
+function delay(f,ms) {
+  return function() {
+    setTimeout(() => f.apply(this,arguments),ms);
+  }
+}
+
+let f1000 = delay(alert, 1000);
+f1000("test"); // показывает "test" после 1000 мс */
+
