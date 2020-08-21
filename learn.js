@@ -254,9 +254,9 @@ let sayHi2 = function func(who) {
   };
 }
 /* function hash() { */
-  //хэширующая функция которая знает, как сделать одно значение из многих.
- // return [].join.call(arguments); //если бы написали просто arguments.join() то получили бы ошибку
- //ибо arguments это псевдомассив а join такое не хавает
+//хэширующая функция которая знает, как сделать одно значение из многих.
+// return [].join.call(arguments); //если бы написали просто arguments.join() то получили бы ошибку
+//ибо arguments это псевдомассив а join такое не хавает
 //то что мы написали называется "заимствованием метода" */
 
 /* worker.slow = cacheDecorator(worker.slow, hash); */
@@ -311,14 +311,15 @@ function throttle(func, ms) {
     savedArgs,
     savedThis;
   function wrapper() {
-    if (isThrottled) { // (2)
+    if (isThrottled) {
+      // (2)
       savedArgs = arguments;
       savedThis = this;
       return;
     }
     func.apply(this, arguments); // (1)
     isThrottled = true;
-    setTimeout(function() {
+    setTimeout(function () {
       isThrottled = false; // (3)
       if (savedArgs) {
         wrapper.apply(savedThis, savedArgs);
@@ -329,7 +330,7 @@ function throttle(func, ms) {
   return wrapper;
 }
 function f(a) {
-  console.log(a)
+  console.log(a);
 }
 let f10000 = throttle(f, 1000);
 
@@ -338,25 +339,30 @@ f10000(2); // (ограничение, 1000 мс ещё нет)
 f10000(3); // (ограничение, 1000 мс ещё нет) */
 
 //декоратор который добавляет время вызова в консоль
-console.group('Моя функция:');
+console.group("Моя функция:");
 function nameAlert(arg) {
-  alert('Привет ' + arg);
+  alert("Привет " + arg);
 }
 
 function nameAlertDecorator(f) {
-  return function() {
+  return function () {
     let date = new Date();
     let minutes = date.getMinutes();
-    console.log('Время вызова: ' + date.getHours() +':'+ minutes.toString().padStart(2,'0'));
-    f.bind(this,arguments[0],arguments[1])();
-  }
+    console.log(
+      "Время вызова: " +
+        date.getHours() +
+        ":" +
+        minutes.toString().padStart(2, "0")
+    );
+    f.bind(this, arguments[0], arguments[1])();
+  };
 }
 let nameAlertDecorator1 = nameAlertDecorator(nameAlert);
 /* nameAlertDecorator1('Саша');
 nameAlertDecorator1('Илья'); */
 console.groupEnd();
 
-//задачи из раздела о декораторах 
+//задачи из раздела о декораторах
 // №1 задача о "шпионе"
 /* function work(a, b) {
   alert( a + b ); // произвольная функция или метод
@@ -393,3 +399,92 @@ function delay(f,ms) {
 let f1000 = delay(alert, 1000);
 f1000("test"); // показывает "test" после 1000 мс */
 
+//№3 Декоратор debounce
+/* function debounce(f,ms) {
+  let isCoolDown = false;
+  function wrapper() {
+    if(isCoolDown) {
+      return;
+    } else {
+      isCoolDown = true;
+      setTimeout(() => isCoolDown = false,ms);
+      f.apply(this,arguments);
+    }
+  }
+  return wrapper;
+}
+
+let f1 = debounce(alert, 1000);
+
+f1(1); // выполняется немедленно
+f1(2); // проигнорирован
+
+setTimeout( () => f1(3), 100); // проигнорирован (прошло только 100 мс)
+setTimeout( () => f1(4), 1100); // выполняется
+setTimeout( () => f1(5), 1500); // проигнорирован (прошло только 400 мс от последнего вызова) */
+
+//№4 Троттлящий декоратор
+
+function f(a) {
+  console.log(a);
+}
+
+function throttle(f, ms) {
+  let isCoolDown = false,
+    savedThis,
+    savedArgs;
+  function wrapper() {
+    if (isCoolDown) {
+      savedThis = this;
+      savedArgs = arguments;
+      return;
+    } else {
+      isCoolDown = true;
+      f.apply(this, arguments);
+      setTimeout(() => {
+        isCoolDown = false;
+        if (savedArgs) {
+          wrapper.apply(savedThis, savedArgs);
+          savedArgs = savedThis = null;
+        }
+      }, ms);
+    }
+  }
+  return wrapper;
+}
+// f1000 передаёт вызовы f максимум раз в 1000 мс
+let f1000 = throttle(f, 1000);
+
+f1000(1); // показывает 1
+f1000(2); // (ограничение, 1000 мс ещё нет)
+f1000(3); // (ограничение, 1000 мс ещё нет)
+
+/* let descriptor = Object.getOwnPropertyDescriptor(arrayLike,'length');
+alert( JSON.stringify(descriptor, null, 2 ) );
+Object.defineProperty(arrayLike,'length',{
+  writable : false
+})
+arrayLike.length = 'suka'; //в нестрогом режиме ошибки не будет хоть так и нельзя ибо writable: false */
+
+/* let user = {
+  name: "John",
+  toString() {
+    return this.name;
+  }
+};
+
+Object.defineProperty(user, "toString", {
+  enumerable: false
+});
+// Теперь наше свойство toString пропало из цикла:
+for (let key in user) alert(key); // name */
+
+let clone = Object.defineProperties({}, Object.getOwnPropertyDescriptors(arrayLike)); //жесткий клон 
+
+let user = {
+  name: "John",
+  surname: "Smith",
+  fullName: `${this.name} ${this.surname}`,
+  cons: this
+  };
+  console.log(user.fullName); // John Smith
