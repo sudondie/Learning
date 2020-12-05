@@ -1,0 +1,11 @@
+{
+  "name": "node.js-course",
+  "version": "1.0.0",
+  "description": "\"me, learning the course on coursera\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "sudondie",
+  "license": "ISC"
+}
