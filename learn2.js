@@ -93,3 +93,50 @@ function findOdd(A) {
   A.forEach((elem)=> {((A.filter((e) => e === elem).length) %2!= 0) ? odd.add(elem) : 0})
   return Number([...odd]);
 }
+
+class Car {
+  constructor(name,slogan) {
+    this._name = name; // срабатывает сеттер который создает переменную setname и через геттер возвращает, 
+    this.slogan = slogan; //если бы в сеттере было this.name = "BMW is suck" то получилась бы рекурсия ибо сеттер вызывает сеттер
+  }
+  get name() {
+    return this._name;
+  }
+  set name(name) {
+    (name.length <= 4) ? alert('Слишком которкое имя') : this._name = name.trim().toLowerCase();
+
+  }
+  getSlogan() {
+    return (this.name + ` slogan: ${this.slogan}`)
+  }
+}
+let mazda = new Car('mazda','zoom-zoom');
+let bmw = new Car('BMW','we make it better');
+console.log(mazda.getSlogan());
+console.log(bmw.getSlogan());
+console.log(mazda)
+class CrazyCar extends Car {
+  crazySlogan() {
+    return this.slogan = (`${super.getSlogan() + ' but crazy'}`)
+  }
+}
+
+let crazyBmw = new CrazyCar('CrazyBmw','still BMW buts')
+console.log(crazyBmw)
+
+class CoffeeMachine {
+  _waterAmount = 100;
+  constructor(power) {
+    this._power = power;
+  }
+
+  get waterAmount() {
+    return this._waterAmount;
+  }
+
+}
+
+// создаём кофеварку
+let coffeeMachine = new CoffeeMachine(100);
+
+console.log(`Мощность: ${coffeeMachine.waterAmount}W`); // Мощность: 100W
