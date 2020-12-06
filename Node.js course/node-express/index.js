@@ -2,7 +2,9 @@ const http = require("http");
 const express = require("express");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
-const dishRouter = require("./routes/dishRouter"); //импортируем express router из другого файлы
+const dishRouter = require("./routes/dishRouter"); 
+const promoRouter = require("./routes/promoRouter"); //import express routers from another file
+const leaderRouter = require("./routes/lederRouter");
 const hostname = "localhost";
 const port = 3000;
 
@@ -11,7 +13,12 @@ app.use(morgan("dev"));
 app.use(express.static(__dirname+ "/public"));
 app.use(bodyParser.json());
 
-app.use('/dishes', dishRouter); //Используем импортированный роутер 
+app.use('/dishes', dishRouter); //use imported router
+app.use('/dishes/:dishId', dishRouter); 
+app.use('/promotions', promoRouter); //use imported router
+app.use('/promotions/:promoId', promoRouter); 
+app.use('/leaders', leaderRouter); //use imported router
+app.use('/leaders/:leaderId', leaderRouter); 
 app.use((req, res) => {
   console.log(req.headers);
   res.statusCode = 200;
