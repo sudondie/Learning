@@ -1,0 +1,11 @@
+{
+  "name": "cesar-encrypt",
+  "version": "1.0.0",
+  "description": "basic enctrypt and decrypt algorithm ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "sudondie",
+  "license": "ISC"
+}
