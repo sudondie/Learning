@@ -1,26 +1,35 @@
 const mongo = require("mongodb").MongoClient;
 const assert = require("assert");
+const dboper = require("./operations");
 
 const url = "mongodb://localhost:27017/";
 const dbname = "conFusion";
 
 mongo.connect(url, (err, client) => {
   assert.strictEqual(err, null);
-  console.log("Connected to the server");
+  console.log("Подключился к серверу");
   const db = client.db(dbname);
-  const collection = db.collection("dishes");
-  collection.insertOne({ name: "Ilia", familia: "Skakov" }, (err, result) => {
-    assert.strictEqual(err, null);
-    console.log("after insert: \n");
-    console.log(result.ops);
-    collection.find({}).toArray((err, docs) => {
-      assert.strictEqual(err, null);
-      console.log("Found: \n");
-      console.log(docs);
-      db.dropCollection("dishes", (err,result) => {
-        assert.strictEqual(err,null);
-        client.close();
-      })
-    });
-  });
+  dboper.insertDocument(db,{ name: "Vadonut", description: "Test" },"dishes",(result) => {
+      console.log("Вставил в документ:\n", result.ops);
+      dboper.findDocuments(db, "dishes", (docs) => {
+        console.log("Найдено:\n", docs);
+        dboper.updateDocument(
+          db,
+          { name: "Vadonut" },
+          { description: "Updated Test" },
+          "dishes",
+          (result) => {
+            console.log("Обновил документ:\n", result.result);
+            dboper.findDocuments(db, "dishes", (docs) => {
+              console.log("Найдено обновленны документов:\n", docs);
+              db.dropCollection("dishes", (result) => {
+                console.log("Dropped Collection: ", result);
+                client.close();
+              });
+            });
+          }
+        );
+      });
+    }
+  );
 });
