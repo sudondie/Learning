@@ -3,16 +3,19 @@
   "version": "1.0.0",
   "eslintConfig": {
     "env": {
-        "browser": true,
-        "node": true
+      "browser": true,
+      "node": true
     }
-},
+  },
   "description": "\"me, learning the course on coursera\"",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start" : "node app/index"
+    "start": "node app/index"
   },
   "author": "sudondie",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "eslint": "^7.16.0"
+  }
 }
