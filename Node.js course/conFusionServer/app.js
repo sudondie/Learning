@@ -11,10 +11,10 @@ let promoRouter = require('./routes/promoRouter');
 let leaderRouter = require('./routes/leaderRouter');
 
 let mongoose = require('mongoose');
-let Dishes = require('./models/dishes');
+//let Dishes = require('./models/dishes');
 const url = 'mongodb://localhost:27017/conFusion';
 const connect = mongoose.connect(url);
-connect.then((db) => {
+connect.then(() => {
   console.log('correctly connected to the server!');
 }, (err) => {
   console.log(err);

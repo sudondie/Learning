@@ -2,7 +2,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const dishRouter = express.Router();
-const mongoose = require('mongoose');
+//const mongoose = require('mongoose');
 const Dishes = require('../models/dishes');
 dishRouter.use(bodyParser.json());
 
@@ -112,7 +112,7 @@ dishRouter.route('/:dishId/comments')
             }, (err) => next(err))
             .catch((err) => next(err));
     })
-    .put((req, res, next) => {
+    .put((req, res) => {
         res.statusCode = 403;
         res.end('PUT operation not supported on /dishes/' +
             req.params.dishId + '/comments');
@@ -159,7 +159,7 @@ dishRouter.route('/:dishId/comments/:commentId')
             }, (err) => next(err))
             .catch((err) => next(err));
     })
-    .post((req, res, next) => {
+    .post((req, res) => {
         res.statusCode = 403;
         res.end('POST operation not supported on /dishes/' + req.params.dishId +
             '/comments/' + req.params.commentId);
