@@ -1,3 +1,4 @@
+//mongod --dbpath="C:\Users\sudondie\Documents\GitHub\Learning\Node.js course\mongodb\data" --bind_ip 127.0.0.1
 let createError = require('http-errors');
 let express = require('express');
 let path = require('path');
@@ -11,6 +12,7 @@ let promoRouter = require('./routes/promoRouter');
 let leaderRouter = require('./routes/leaderRouter');
 
 let mongoose = require('mongoose');
+const e = require('express');
 //let Dishes = require('./models/dishes');
 const url = 'mongodb://localhost:27017/conFusion';
 const connect = mongoose.connect(url);
@@ -32,6 +34,29 @@ app.use(express.urlencoded({
   extended: false
 }));
 app.use(cookieParser());
+
+function auth(req, res, next) {
+  console.log(req.headers);
+  let authHeader = req.headers.authorization;
+  if (!authHeader) {
+    let err = new Error("you are not logged in!");
+    res.setHeader("WWW-Authenticate", "Basic");
+    err.status = 401;
+    return next(err);
+  }
+  let auth = Buffer.from(authHeader.split(' ')[1], 'base64').toString().split(':');
+  let username = auth[0];
+  let password = auth[1];
+  if (username == 'admin' && password == 'password') {
+    next();
+  } else {
+    let err = new Error("you are not logged in!");
+    res.setHeader("WWW-Authenticate", "Basic");
+    err.status = 401;
+    return next(err);
+  }
+}
+app.use(auth);
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
