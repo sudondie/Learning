@@ -39,7 +39,8 @@ console.log(parseInt(stroka)); //выводит все символы Юнико
 for (let i = 65; i<=220; i++) {
     str +=String.fromCodePoint(i);
 }
-alert(str); */ let guests = [
+alert(str); */
+let guests = [
   "Dima",
   "Lesha",
   1,
@@ -79,6 +80,7 @@ function camelize(str) {
 }
 console.log(camelize("-webkit-transition"));
 let arr = [5, 3, 8, 1];
+
 function filterRange(arr, a, b) {
   return arr.slice(a, b - 1);
 }
@@ -97,9 +99,14 @@ range[Symbol.iterator] = function () {
     last: this.to,
     next() {
       if (this.current <= this.last) {
-        return { done: false, value: this.current++ };
+        return {
+          done: false,
+          value: this.current++
+        };
       } else {
-        return { done: true };
+        return {
+          done: true
+        };
       }
     },
   };
@@ -128,6 +135,7 @@ console.log(arrayTrue);
 
 //задача 1 из Map и Set
 let superArr = ["suka", "suka", "bitch", "please", "bitch", "kill"];
+
 function unique(arr) {
   return Array.from(new Set(arr));
 }
@@ -200,7 +208,7 @@ function ask(question, ...handlers) {
   }
 }
 
-//ask('Вы гей?', () => alert("вы ответили что вы гей!"), result => alert(result));
+//ask('Вы gay?', () => alert("вы ответили что вы gay!"), result => alert(result));
 
 function makeCounter() {
   function counter() {
@@ -214,6 +222,7 @@ let counter = makeCounter();
 
 function sum(a) {
   let current = a;
+
   function f(b) {
     current += b;
     return f;
@@ -310,6 +319,7 @@ function throttle(func, ms) {
   let isThrottled = false,
     savedArgs,
     savedThis;
+
   function wrapper() {
     if (isThrottled) {
       // (2)
@@ -329,6 +339,7 @@ function throttle(func, ms) {
   }
   return wrapper;
 }
+
 function f(a) {
   console.log(a);
 }
@@ -340,6 +351,7 @@ f10000(3); // (ограничение, 1000 мс ещё нет) */
 
 //декоратор который добавляет время вызова в консоль
 console.group("Моя функция:");
+
 function nameAlert(arg) {
   alert("Привет " + arg);
 }
@@ -350,9 +362,9 @@ function nameAlertDecorator(f) {
     let minutes = date.getMinutes();
     console.log(
       "Время вызова: " +
-        date.getHours() +
-        ":" +
-        minutes.toString().padStart(2, "0")
+      date.getHours() +
+      ":" +
+      minutes.toString().padStart(2, "0")
     );
     f.bind(this, arguments[0], arguments[1])();
   };
@@ -433,6 +445,7 @@ function throttle(f, ms) {
   let isCoolDown = false,
     savedThis,
     savedArgs;
+
   function wrapper() {
     if (isCoolDown) {
       savedThis = this;
@@ -486,5 +499,5 @@ let user = {
   surname: "Smith",
   fullName: `${this.name} ${this.surname}`,
   cons: this
-  };
-  console.log(user.fullName); // John Smith
+};
+console.log(user.fullName); // John Smith

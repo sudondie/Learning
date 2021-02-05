@@ -47,34 +47,31 @@ function high(x) {
   return word[word.length - 1];
 }
 
-let obj = Object.create(
-  {
-    calculateAge() {
+let obj = Object.create({
+  calculateAge() {
+    return new Date().getFullYear() - this.birthYear;
+  },
+}, {
+  name: {
+    value: "Ilia",
+    enumerable: true,
+    writable: true,
+  },
+  birthYear: {
+    value: 1999,
+    writable: true,
+    enumerable: true,
+  },
+  age: {
+    get() {
       return new Date().getFullYear() - this.birthYear;
     },
+    set(value) {
+      this.birthYear = value;
+      console.log("setted obj.age to: " + value);
+    },
   },
-  {
-    name: {
-      value: "Ilia",
-      enumerable: true,
-      writable: true,
-    },
-    birthYear: {
-      value: 1999,
-      writable: true,
-      enumerable: true,
-    },
-    age: {
-      get() {
-        return new Date().getFullYear() - this.birthYear;
-      },
-      set(value) {
-        this.birthYear = value;
-        console.log("setted obj.age to: " + value);
-      },
-    },
-  }
-);
+});
 
 class Rabbit {
   constructor(name) {
@@ -90,12 +87,14 @@ console.log(Object.getPrototypeOf(rabbit));
 
 function findOdd(A) {
   let odd = new Set();
-  A.forEach((elem)=> {((A.filter((e) => e === elem).length) %2!= 0) ? odd.add(elem) : 0})
+  A.forEach((elem) => {
+    ((A.filter((e) => e === elem).length) % 2 != 0) ? odd.add(elem): 0
+  })
   return Number([...odd]);
 }
 
 class Car {
-  constructor(name,slogan) {
+  constructor(name, slogan) {
     this._name = name; // срабатывает сеттер который создает переменную setname и через геттер возвращает, 
     this.slogan = slogan; //если бы в сеттере было this.name = "BMW is suck" то получилась бы рекурсия ибо сеттер вызывает сеттер
   }
@@ -103,15 +102,15 @@ class Car {
     return this._name;
   }
   set name(name) {
-    (name.length <= 4) ? alert('Слишком которкое имя') : this._name = name.trim().toLowerCase();
+    (name.length <= 4) ? alert('Слишком которкое имя'): this._name = name.trim().toLowerCase();
 
   }
   getSlogan() {
     return (this.name + ` slogan: ${this.slogan}`)
   }
 }
-let mazda = new Car('mazda','zoom-zoom');
-let bmw = new Car('BMW','we make it better');
+let mazda = new Car('mazda', 'zoom-zoom');
+let bmw = new Car('BMW', 'we make it better');
 console.log(mazda.getSlogan());
 console.log(bmw.getSlogan());
 console.log(mazda)
@@ -121,7 +120,7 @@ class CrazyCar extends Car {
   }
 }
 
-let crazyBmw = new CrazyCar('CrazyBmw','still BMW buts')
+let crazyBmw = new CrazyCar('CrazyBmw', 'still BMW buts')
 console.log(crazyBmw)
 
 class CoffeeMachine {
@@ -140,3 +139,42 @@ class CoffeeMachine {
 let coffeeMachine = new CoffeeMachine(100);
 
 console.log(`Мощность: ${coffeeMachine.waterAmount}W`); // Мощность: 100W
+
+let array = {
+  name: "ilia",
+  age: 21,
+  get nameAge() {
+    return `${this.name} ${this.age}`;
+  },
+  set setName(value) {
+    this.name = value;
+  }
+}
+
+let myPromise = new Promise((resolve) => {
+  let count = Number(prompt("Введите число: "));
+  console.log(count)
+  setTimeout(() => {
+    resolve(count += 100);
+  }, 1000);
+}).then((succsessMessage) => {
+  console.log('Итого ' + succsessMessage)
+})
+const delay = (ms) => {
+  return new Promise(resolve => setTimeout(() => {
+    resolve();
+  }, ms))
+}
+let url = 'https://jsonplaceholder.typicode.com/todos';
+async function showSmth() {
+  try {
+    console.log('Loading data from server...')
+    await delay(3000); //Взовращает промис
+    const response = await fetch(url); //Взовращает промис
+    const data = await response.json(); //Взовращает промис
+    console.log("Data: ", data);
+  } catch (e) {
+    console.error(e);
+  }
+}
+showSmth();
