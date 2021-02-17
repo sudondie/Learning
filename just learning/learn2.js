@@ -124,9 +124,9 @@ let crazyBmw = new CrazyCar('CrazyBmw', 'still BMW buts')
 console.log(crazyBmw)
 
 class CoffeeMachine {
-  _waterAmount = 100;
   constructor(power) {
     this._power = power;
+    this._waterAmount = 100;
   }
 
   get waterAmount() {
@@ -151,7 +151,7 @@ let array = {
   }
 }
 
-let myPromise = new Promise((resolve) => {
+/* let myPromise = new Promise((resolve) => {
   let count = Number(prompt("Введите число: "));
   console.log(count)
   setTimeout(() => {
@@ -164,8 +164,9 @@ const delay = (ms) => {
   return new Promise(resolve => setTimeout(() => {
     resolve();
   }, ms))
-}
-let url = 'https://jsonplaceholder.typicode.com/todos';
+} */
+
+/* let url = 'https://jsonplaceholder.typicode.com/todos';
 async function showSmth() {
   try {
     console.log('Loading data from server...')
@@ -177,4 +178,138 @@ async function showSmth() {
     console.error(e);
   }
 }
-showSmth();
+showSmth(); */
+
+/* function fetchTodos() {
+  console.log('Загружаем данные...')
+  return delay(2000)
+    .then(() => fetch(url))
+    .then(response => response.json());
+}
+fetchTodos()
+  .then(data => {
+    console.log(data)
+  })
+  .catch(e => console.error(e)); */ // Это другой способ через промисы, в целом предыдущий это тоже самое ибо бабель его превращает
+//в такой пример
+const userURL = 'https://jsonplaceholder.typicode.com/users';
+//Через XmlHttpRequest
+/* function sendRequests(method, url, body = null) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open(method, url);
+    xhr.responseType = 'json';
+    xhr.setRequestHeader('Content-Type', "application/json");
+    xhr.onload = () => {
+      xhr.status >= 400 ? reject(xhr.response) : resolve(xhr.response);
+    }
+    xhr.onerror = () => {
+      reject(xhr.response);
+    }
+    xhr.send(JSON.stringify(body));
+  })
+}
+const body = {
+  name: "ilia",
+  age: 21
+}
+sendRequests("POST", userURL, body) //Можно и GET запрос тогда посылать не нужно JSON
+  .then(data => console.log(data))
+  .catch(e => console.error(e)) */
+
+//Теперь тоже самое только через суперновый fetch 
+function sendRequestsFetch(method, url, body = /null) {
+  const headers = {
+    'Content-type': 'application/json'
+  }
+  return fetch(url, {
+    method: method,
+    body: JSON.stringify(body),
+    headers: headers
+  }).then(response => { //Так же можно и для GET тогда нужно оставить только url
+    if (response.ok) {
+      return response.json();
+    } else {
+      return response.json().then(error => {
+        const e = new Error("Something went wrong");
+        e.data = error;
+        throw e;
+      })
+    }
+  })
+}
+/* sendRequestsFetch("GET", userURL) //Можно и POST запрос
+  .then(data => console.log(data))
+  .catch(e => console.error(e)) */
+const body = {
+  name: "ilia",
+  age: 21
+}
+sendRequestsFetch("POST", userURL, body) //Можно и POST запрос
+  .then(data => console.log(data))
+  .catch(e => console.error(e))
+
+let obj1 = {
+  name1: 'ilia',
+  age1: 21
+}
+let obj2 = {
+  name2: 'sasha',
+  age2: 21
+}
+/* let massiv = ['51', '554', 53]
+let massiv2 = ['511', '55324', 534]
+let massiv3 = [...massiv, ...massiv2]
+console.log({
+  ...obj1
+}) //Клон obj1 при помощи оператора spread */
+let numbers = [1, 2, 3, 4, 5]
+console.log(Math.max(...numbers))
+
+function summa(a, b, ...args) {
+  return a + b + args.reduce((a, b) => a + b, 0)
+}
+console.log(summa(...numbers)) //spread
+const [, , c, ...rest] = numbers;
+console.log(c, rest);
+
+const message = 'Hello localstorage';
+localStorage.setItem('message', message)
+console.log(localStorage.getItem('message'))
+localStorage.removeItem('message')
+console.log(localStorage.getItem('message'))
+localStorage.setItem('obj1', JSON.stringify(obj1))
+
+class Human {
+  constructor(name, age, birthday) {
+    this.name = name,
+      this.age = age,
+      this.birthday = birthday
+  }
+  speak() {
+    return (console.log(`Hi,my name is ${this.name} and I am ${this.age} years old`));
+  }
+  get birthYear() {
+    return this.birthday.getFullYear() - this.age
+  }
+  set birthYear(newage) {
+    this.age = newage;
+  }
+}
+const sasha = new Human('Sasha', 21, new Date(Date.now()))
+console.log(sasha)
+
+class Citizen extends Human {
+  constructor(name, age, birthday, city) {
+    super(name, age, birthday),
+      this.city = city
+  }
+  get home() {
+    return this.city
+  }
+  set home(city) {
+    this.city = city
+  }
+}
+const Ilia = new Citizen('Ilia', 21, new Date(Date.now()), 'Rostov-on-Don')
+console.log(Ilia)

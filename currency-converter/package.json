@@ -1,0 +1,15 @@
+{
+  "name": "currency-converter",
+  "version": "1.0.0",
+  "description": "basic currancy converter based on currencylayer API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "sudondie",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "browserify": "^17.0.0"
+  }
+}
