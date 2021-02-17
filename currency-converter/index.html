@@ -5,9 +5,37 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" href="img/logo.png" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="css/main.css" />
     <title>Currency</title>
   </head>
-  <body></body>
-  <script src="index.js"></script>
+  <body>
+    <h1>Конвертер валют</h1>
+    <form action="#" name="convert" id="convert">
+      <input
+        type="text"
+        id="from"
+        placeholder="Из какой валюты? P.S : Вводить нужно код валюты"
+        autocomplete="off"
+      />
+      <input
+        type="text"
+        id="to"
+        placeholder="В какую валюту? P.S : Вводить нужно код валюты"
+        autocomplete="off"
+      />
+      <input
+        type="text"
+        id="amount"
+        placeholder="Количество"
+        autocomplete="off"
+      />
+      <button id="submit">Конвертировать</button>
+    </form>
+  </body>
+  <script src="bundle.js"></script>
 </html>
