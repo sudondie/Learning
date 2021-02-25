@@ -28,12 +28,12 @@ const currencyConvert = async (fromCurrency, toCurrency, amount) => {
     return `${amount} ${fromCurrency} стоит ${converted} ${toCurrency}. Их можно потратить в: \n ${countries}`;
 }
 
-function fuck() {
+async function convertOnClick() {
     const from = document.getElementById("from").value;
     const to = document.getElementById("to").value;
     const amount = document.getElementById("amount").value;
-    currencyConvert(from.toUpperCase(), to.toUpperCase(), Number(amount))
+    await currencyConvert(from.toUpperCase(), to.toUpperCase(), Number(amount))
         .then(message => alert(message))
         .catch(err => console.log(err.message));
 }
-document.getElementById('submit').onclick = fuck;
+document.getElementById('submit').onclick = convertOnClick;

@@ -218,7 +218,7 @@ sendRequests("POST", userURL, body) //Можно и GET запрос тогда 
   .catch(e => console.error(e)) */
 
 //Теперь тоже самое только через суперновый fetch 
-function sendRequestsFetch(method, url, body = /null) {
+function sendRequestsFetch(method, url, body = null) {
   const headers = {
     'Content-type': 'application/json'
   }
@@ -328,5 +328,103 @@ async function something(question) {
     throw new Error(err);
   }
 }
-something('Как вам?');
-console.log('wow');
+/* something('Как вам?'); */
+
+/* async function* fetchCommits(repo) { //Ассинхронный генератор
+    let url = `https://api.github.com/repos/${repo}/commits`;
+    while (url) {
+      const response = await fetch(url, {
+        headers: {
+          'User-Agent': 'Our script'
+        },
+      });
+      const body = await response.json();
+      // (3) Ссылка на следующую страницу находится в заголовках, извлекаем её
+      let nextpage = response.headers.get('Link').match(/<(.*?)>; rel="next"/);
+      nextpage = nextpage && nextpage[1];
+      url = nextpage;
+      for (let commit of body) {
+        yield commit;
+      }
+    }
+  }
+  (async () => {
+    let count = 0;
+    for await (const commit of fetchCommits('javascript-tutorial/en.javascript.info')) {
+      console.log(commit.author.login);
+      if (++count == 50) {
+        break;
+      }
+    }
+  })(); */
+
+let dictionary = {
+  'Hello': 'hola',
+  'say': 'sola',
+  'broken': 'slomano'
+}
+let proxy = new Proxy(dictionary, {
+  get(target, phrase) {
+    for (let i = 0; i <= Object.keys(target).length - 1; i++) {
+      if (phrase.toUpperCase() == Object.keys(target)[i].toUpperCase()) {
+        return Object.values(target)[i];
+      }
+    }
+    return phrase;
+  }
+});
+console.log(proxy['hello']);
+
+const withDefaultValue = (target,
+  defaultValue = 0) => {
+  return new Proxy(target, {
+    get: (target, prop) => (prop in target ? target[prop] : defaultValue) //Если нет такого ключа то дефолт
+  })
+}
+const pos = withDefaultValue({
+    x: 24,
+    y: 40
+  },
+  0)
+
+const withHiddenProperties = (target, prefix = '_') => {
+  return new Proxy(target, {
+    has: (target, prop) => (prop in target && !prop.startsWith(prefix)), //Не даст показать приватные свойства
+    ownKeys: target => Reflect.ownKeys(target).filter(p => !p.startsWith(prefix)), //не даст их перебрать 
+    get: (target, prop, receiver) => (prop in receiver) ? target[prop] : void 0
+  })
+}
+const withHid = withHiddenProperties({
+  name: 'ilia',
+  age: 25,
+  _uid: '144545'
+
+})
+
+//Optimization 
+const IndexedArray = new Proxy(Array, {
+  construct(target, [args]) { //ловушка на создание класса через new
+    const index = {};
+    args.forEach(item => (index[item.id] = item))
+    return new Proxy(new target(...args), {
+      get(target, prop) {
+        switch (prop) {
+          case 'push':
+            return item => {
+              index[item.id] = item;
+              target[prop].call(target, item);
+            }
+          case 'findById':
+            return id => index[id]
+          default:
+            return target[prop];
+        }
+      }
+    })
+  }
+})
+const users = new IndexedArray([{
+  id: 11,
+  name: 'Ilia',
+  age: 21
+}])
