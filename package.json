@@ -16,7 +16,5 @@
     "url": "https://github.com/sudondie/JS---------/issues"
   },
   "homepage": "https://github.com/sudondie/JS---------#readme",
-  "devDependencies": {
-    "eslint": "^7.6.0"
-  }
+  "devDependencies": {}
 }
